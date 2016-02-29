@@ -502,12 +502,26 @@ function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
 
-  var items = document.querySelectorAll('.mover');
-  for (var i = 0; i < items.length; i++) {
-    var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
-    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
-  }
+  var items = document.getElementsByClassName('mover');
 
+  var top = document.body.scrollTop;
+
+    var constArray = [];
+
+    var i;
+
+    // Generate five constant, repeating values:
+    for (i = 0; i < 5; i++) {
+      constArray.push(Math.sin((top / 1250) + i));
+    }
+
+    // Perform for loop utilizing values from the constant array.
+    for (i = 0; i < items.length; i++) {
+        var phase = constArray[i % 5];
+
+        items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+    }
+	
   // User Timing API to the rescue again. Seriously, it's worth learning.
   // Super easy to create custom metrics.
   window.performance.mark("mark_end_frame");
@@ -525,7 +539,7 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 200; i++) {
+  for (var i = 0; i < 30; i++) { //MLF: Reduce 200 to 30...
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
